@@ -36,7 +36,7 @@ let arr = [20, 33, 1, 'Человек', 2, 3];
 let sum = 0;
 
 for (i = 0; i < arr.length; i++) {
-if (typeof(arr[i]) === typeof(5)) {
+if (typeof(arr[i]) == 'number') {
     arr[i] **= 3;
     sum += arr[i];
 }
@@ -45,16 +45,16 @@ console.log(Math.sqrt(sum));
 
 // ПЯТОЕ
 function sliceString(strUser) {
-    if (typeof(strUser) != typeof('string')) {
+    if (typeof(strUser) != 'string') {
         alert('Вы передали не строку!');
     }
     
     strUser = strUser.trim();
     
-    if (strUser.length < 10) {
-        return;
+    if (strUser.length < 50) {
+        console.log(strUser);
     } else {    
-        strUser = strUser.slice(0, 10) + '...';
+        strUser = strUser.slice(0, 50) + '...';
         console.log(strUser);
     }
 }
