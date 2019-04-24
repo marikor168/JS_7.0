@@ -74,6 +74,7 @@ let appData = {
 
         appData.income.push(prompt('Может что-то ещё?', ''));
         appData.income.sort();
+        
         let chooseIncomeItem = '\n';
         appData.income.forEach(function (item, i) {
             chooseIncomeItem += (i + 1) + ') ' + item + ' \n';
