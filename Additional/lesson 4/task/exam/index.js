@@ -13,11 +13,12 @@ function getFriendlyNumbers(start, end) {
                 arrFriendlyNumbers.push(arrFriendlyPair);
             }
         }
+        // console.log(arrFriendlyNumbers);
         return arrFriendlyNumbers;
     }
 }
 
-getFriendlyNumbers(1, 1);
+console.log(getFriendlyNumbers(1, 7000));
 
 // получаем сумму делителей
 function getDivisorsSum(num) {
