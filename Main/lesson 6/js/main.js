@@ -22,33 +22,11 @@ let startBtn = document.getElementById('start'),
     dayValue = document.querySelector('.day-value');
 
 let money, time;
+let isStarted = false;
 countBtn.disabled = true;
 expensesBtn.disabled = true;
 optionalExpensesBtn.disabled = true;
 
-for (let i = 0; i < expensesItem.length; i++) {
-    expensesItem[i].addEventListener('keyup', disableExpensesBtn);
-}
-
-for (let i = 0; i < optionalExpensesItem.length; i++) {
-    optionalExpensesItem[i].addEventListener("keyup", disableOptionalExpensesBtn);
-}
-
-function disableExpensesBtn() {
-    if (expensesItem[0].value && expensesItem[1].value || expensesItem[2].value && expensesItem[3].value) {
-        expensesBtn.disabled = false;
-    } else {
-        expensesBtn.disabled = true;
-    }
-}
-
-function disableOptionalExpensesBtn() {
-    if (optionalExpensesItem[0].value || optionalExpensesItem[1].value || optionalExpensesItem[2].value) {
-        optionalExpensesBtn.disabled = false;
-    } else {
-        optionalExpensesBtn.disabled = true;
-    }
-}
 
 startBtn.addEventListener('click', function () {
     time = prompt('Введите дату в формате YYYY-MM-DD', '');
@@ -65,7 +43,34 @@ startBtn.addEventListener('click', function () {
     dayValue.value = new Date(Date.parse(time)).getDate();
 
     countBtn.disabled = false;
+    isStarted = true;
+    disableExpensesBtn();
+    disableOptionalExpensesBtn();
 });
+
+for (let i = 0; i < expensesItem.length; i++) {
+    expensesItem[i].addEventListener('keyup', disableExpensesBtn);
+}
+
+for (let i = 0; i < optionalExpensesItem.length; i++) {
+    optionalExpensesItem[i].addEventListener("keyup", disableOptionalExpensesBtn);
+}
+
+function disableExpensesBtn() {
+    if (((expensesItem[0].value && expensesItem[1].value) || (expensesItem[2].value && expensesItem[3].value)) && isStarted) {
+        expensesBtn.disabled = false;
+    } else {
+        expensesBtn.disabled = true;
+    }
+}
+
+function disableOptionalExpensesBtn() {
+    if ((optionalExpensesItem[0].value || optionalExpensesItem[1].value || optionalExpensesItem[2].value)  && isStarted) {
+        optionalExpensesBtn.disabled = false;
+    } else {
+        optionalExpensesBtn.disabled = true;
+    }
+}
 
 expensesBtn.addEventListener('click', function () {
     let sum = 0;
@@ -77,13 +82,9 @@ expensesBtn.addEventListener('click', function () {
 
         if ((typeof (a)) === 'string' && (typeof (a)) != null && (typeof (b)) != null &&
             a != '' && b != '' && a.length < 50) {
-            console.log('done');
             appData.expenses[a] = b;
             sum += +b;
-
-        } else {
-            i--;
-        }
+        } 
     }
     expensesValue.textContent = sum;
 });
@@ -93,7 +94,6 @@ optionalExpensesBtn.addEventListener('click', function () {
         let opt = optionalExpensesItem[i].value;
         appData.optionalExpenses[i] = opt;
         optionalExpensesValue.textContent += appData.optionalExpenses[i] + ' ';
-
     }
 });
 
