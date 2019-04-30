@@ -51,12 +51,20 @@ startBtn.addEventListener('click', function () {
 });
 
 for (let i = 0; i < expensesItem.length; i++) {
-    expensesItem[i].addEventListener('keyup', disableExpensesBtn);
+    expensesItem[i].addEventListener('input', disableExpensesBtn);
+}
+
+function checkInput() {
+    for (let i = 0; i < optionalExpensesItem.length; i++) {
+        optionalExpensesItem[i].value = optionalExpensesItem[i].value.replace(/[^а-я]/gi, "");
+        disableOptionalExpensesBtn();
+   }
 }
 
 for (let i = 0; i < optionalExpensesItem.length; i++) {
-    optionalExpensesItem[i].addEventListener("keyup",disableOptionalExpensesBtn);
+    optionalExpensesItem[i].addEventListener('input', checkInput);
 }
+
 
 function disableExpensesBtn() {
     if (((expensesItem[0].value && expensesItem[1].value) || (expensesItem[2].value && expensesItem[3].value)) && isStarted) {
@@ -67,10 +75,6 @@ function disableExpensesBtn() {
 }
 
 function disableOptionalExpensesBtn() {
-    for (let i = 0; i < optionalExpensesItem.length; i++){
-        optionalExpensesItem[i].value = optionalExpensesItem[i].value.replace(/[^а-я]/i, "");
-    }
-
     if ((optionalExpensesItem[0].value || optionalExpensesItem[1].value || optionalExpensesItem[2].value)  && isStarted) {
         optionalExpensesBtn.disabled = false;
     } else {
