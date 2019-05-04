@@ -51,7 +51,7 @@ function countDiff() {
     console.log(dateOne);
     let secondDate = document.querySelector(".secondDate").value;
     let dateTwo = new Date(secondDate);
-    document.querySelector(".dateResult").value = (dateOne - dateTwo) / (1000 * 60 * 60 * 24);
+    document.querySelector(".dateResult").value = Math.abs((dateOne - dateTwo) / (1000 * 60 * 60 * 24));
 
 }
 
