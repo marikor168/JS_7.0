@@ -98,61 +98,106 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Плавная прокрутка
 
-// ищем все элементы а с атрибутом href *= (значение href содержит по крайней мере одно вхождение строки "#" как подстроки)
-let anchors = document.querySelectorAll('a[href*="#"]');
+    // ищем все элементы а с атрибутом href *= (значение href содержит по крайней мере одно вхождение строки "#" как подстроки)
+    let anchors = document.querySelectorAll('a[href*="#"]');
 
-for (let anchor of anchors) {
-  anchor.addEventListener('click', function (event) {
-    // убираем стандартное поведение
-    event.preventDefault();
+    for (let anchor of anchors) {
+        anchor.addEventListener('click', function (event) {
+            // убираем стандартное поведение
+            event.preventDefault();
+
+            //получаем id контейнеров
+            const containerID = anchor.getAttribute('href');
+            //перемещаемся к этому контейнеру
+            document.querySelector(containerID).scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        });
+    }
+
+    // Modal
+
+    let overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        descriptionBtn = document.querySelectorAll('.btn-overlay'),
+        opac = 0;
+
+    let myAnimationId = -1,
+        myAnimationStopId = -1;
+
+    function myAnimation() {
+        clearInterval(myAnimationId);
+        myAnimationId = setInterval(frame, 100);
+        function frame() {
+            if (opac >= 1) {
+                document.body.style.overflow = 'hidden';
+                clearInterval(myAnimationId);
+            } else {
+                clearInterval(myAnimationStopId);
+                opac = opac + 0.1;
+                overlay.style.opacity = opac;
+                overlay.style.display = 'block';
+            }
+        }
+    }
+
+    function myAnimationStop() {
+        clearInterval(myAnimationStopId);
+        myAnimationStopId = setInterval(frame, 40);
+
+        function frame() {
+            if (opac <= 0) {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+                clearInterval(myAnimationStopId);
+            } else {
+                clearInterval(myAnimationId);
+                opac = opac - 0.05;
+                overlay.style.opacity = opac;
+            }
+        }
+    }
     
-    //получаем id контейнеров
-    const containerID = anchor.getAttribute('href');
-    //перемещаемся к этому контейнеру
-    document.querySelector(containerID).scrollIntoView({
-      behavior: 'smooth',
-      block: 'start'
-    });
-  });
-}
+    if (window.navigator.userAgent.toUpperCase().indexOf('.NET') != -1 ||
+        window.navigator.userAgent.toUpperCase().indexOf('EDGE') != -1) {
 
-  // Modal
+        descriptionBtn.forEach(function (item) {
 
-  let more = document.querySelector('.more'),
-  overlay = document.querySelector('.overlay'),
-  close = document.querySelector('.popup-close');
+            item.addEventListener('click', function () {
+                overlay.style.display = 'block';
+                this.classList.add('more-splash');
+                overlay.classList.add('fade');
+                document.body.style.overflow = 'hidden';
+            });
 
-// let timerId = setTimeout(function showMore() {
+            close.addEventListener('click', function () {
+                overlay.style.display = 'none';
+                item.classList.remove('more-splash');
+                overlay.classList.remove('fade');
+                document.body.style.overflow = '';
+            });
+        });
+    } else if (window.navigator.userAgent.toUpperCase().indexOf('ANDROID') != -1 ||
+        window.navigator.userAgent.toUpperCase().indexOf('IPHONE') != -1) {
 
-// })  
-more.addEventListener('click', function() {
-  overlay.style.display = 'block';
-overlay.style.opacity = '0.1';
-//   this.classList.add('more-splash');
-//   document.body.style.overflow = 'hidden';
-});
+        descriptionBtn.forEach(function (item) {
 
-close.addEventListener('click', function() {
-  overlay.style.display = 'none';
-  more.classList.remove('more-splash');
-  document.body.style.overflow = '';
-});
+            item.addEventListener('click', function () {
+                overlay.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
 
-let descriptionBtn = document.querySelectorAll('.description-btn');
-
-descriptionBtn.forEach(function(item) {
-
-  item.addEventListener('click', function() {
-  overlay.style.display = 'block';
-  this.classList.add('more-splash');
-  document.body.style.overflow = 'hidden';
-  });
-
-close.addEventListener('click', function() {
-  overlay.style.display = 'none';
-  item.classList.remove('more-splash');
-  document.body.style.overflow = '';
-  });
-});  
-
+            close.addEventListener('click', function () {
+                overlay.style.display = 'none';
+                document.body.style.overflow = '';
+            });
+        });
+    } else {
+        close.addEventListener('click', myAnimationStop);
+        
+        descriptionBtn.forEach(function (item) {
+            item.addEventListener('click', myAnimation);
+        });
+    }
 });
