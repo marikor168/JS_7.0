@@ -1,52 +1,51 @@
+let telPlaceholder = "(___) ___-____";
 let tel = document.querySelector('#tel');
+let numsOnly ="";
 
 tel.addEventListener('focus', () => {
-    tel.value = '(___)___-__-__';
+    if (numsOnly.length !== 10){
+        tel.value = telPlaceholder;
+    }
 });
 
 tel.addEventListener('input', () => {
-    let telValue = tel.value
+    let rawTel = tel.value;
+    numsOnly = rawTel.replace(/\D/g, "");
+    
+    let result = telPlaceholder.split("");
+    for (let i = 0, j = 0; i < result.length; i++) {
+        if (i == 0 || i == 4 || i == 5 || i == 9){
+            continue;
+        }
+        
+        let tmp = numsOnly[j++];
+        if (tmp !== undefined){
+            result[i] = tmp;
+        } 
+    }
+    
+    tel.value = result.join("");
+
+    if (numsOnly.length > 10) {
+        numsOnly = numsOnly.substr(0, 10);
+    } 
+
+    setCursorPosition();
 });
+
+function setCursorPosition(){
+    let length = numsOnly.length;
+    if (length >= 0 && length <= 3) {
+        tel.setSelectionRange(length + 1, length + 1);
+    } else if (length >= 4 && length <= 6){
+        tel.setSelectionRange(length + 3, length + 3);
+    } else {
+        tel.setSelectionRange(length + 4, length + 4);
+    }
+}
 
 tel.addEventListener('blur', () => {
-    tel.value = '';
-
-});
-
-
-function setCursorPosition(pos, elem) {
-
-    elem.focus();
-
-    if (elem.setSelectionRange) elem.setSelectionRange(pos, pos);
-
-    else if (elem.createTextRange) {
-
-        var range = elem.createTextRange();
-        range.collapse(true);
-        range.moveEnd("character", pos);
-        range.moveStart("character", pos);
-        range.select();
+    if (numsOnly.length !== 10){
+        tel.value = '';    
     }
-
-}
-
-
-function mask(event) {
-    var matrix = this.defaultValue,
-        i = 0,
-        def = matrix.replace(/\D/g, ""),
-        val = this.value.replace(/\D/g, "");
-    def.length >= val.length && (val = def);
-    matrix = matrix.replace(/[_\d]/g, function (a) {
-        return val.charAt(i++) || "_";
-    });
-    this.value = matrix;
-    i = matrix.lastIndexOf(val.substr(-1));
-    i < matrix.length && matrix != this.defaultValue ? i++ : i = matrix.indexOf("_");
-    setCursorPosition(i, this);
-
-}
-
-var input = document.querySelector("input");
-input.addEventListener("input", mask, false);
+});
