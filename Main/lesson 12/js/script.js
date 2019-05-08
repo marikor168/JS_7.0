@@ -142,28 +142,31 @@ window.addEventListener('DOMContentLoaded', function () {
     };
 
     let form = document.querySelector('.main-form'),
-        input = form.getElementsByTagName('input')[0],
+        input = form.getElementsByTagName('input'),
         statusMessage = document.createElement('div');
 
-    statusMessage.classList.add('status');
-    statusMessage.style.cssText = 'color: #fff; margin-top: 10px;';    
-
-    input.addEventListener('input', () => {
-        input.value = input.value.replace(/[^0-9+]/g, "");
-        input.value = input.value.replace(/(?<!^)\+/g, "");
+        
+        statusMessage.classList.add('status');
+        statusMessage.style.cssText = 'color: #fff; margin-top: 10px;';    
+        
+    let inputPhone = input[0];
+    inputPhone.addEventListener('input', () => {
+        inputPhone.value = inputPhone.value.replace(/[^0-9+]/g, "");
+        inputPhone.value = inputPhone.value.replace(/(?<!^)\+/g, "");
     });
 
+    
     let formContacts = document.getElementById('form'),
-        inputContacts = formContacts.getElementsByTagName('input');
-
-        inputContacts[0].setAttribute('name', 'mail'); inputContacts[1].setAttribute('name', 'tel');
-
-        let inputTel = inputContacts[1];
-
-        inputTel.addEventListener('input', () => {
-            inputTel.value = inputTel.value.replace(/[^0-9+]/g, "");
-            inputTel.value = inputTel.value.replace(/(?<!^)\+/g, "");
-        });
+    inputContacts = formContacts.getElementsByTagName('input');
+    
+    inputContacts[0].setAttribute('name', 'mail'); inputContacts[1].setAttribute('name', 'tel');
+    
+    let inputTel = inputContacts[1];
+    
+    inputTel.addEventListener('input', () => {
+        inputTel.value = inputTel.value.replace(/[^0-9+]/g, "");
+        inputTel.value = inputTel.value.replace(/(?<!^)\+/g, "");
+    });
 
     function sendForm(elem) {
         elem.addEventListener('submit', function (event) {
@@ -217,7 +220,7 @@ window.addEventListener('DOMContentLoaded', function () {
                     statusMessage.innerHTML = message.success;
                 })
                 .catch(() => statusMessage.innerHTML = message.failure)
-                .then(clearInput)
+                .then(clearInput);
            
         });
     }
