@@ -144,77 +144,41 @@ window.addEventListener('DOMContentLoaded', function () {
         input = form.getElementsByTagName('input')[0],
         statusMessage = document.createElement('div');
 
-        statusMessage.classList.add('status');
+    statusMessage.classList.add('status');
+    statusMessage.style.cssText = 'color: #fff; margin-top: 10px;';
+    
 
-        console.log(input);
-
-        input.addEventListener('input', () => {
-            input.value = input.value.replace(/[^0-9+]/g, "");
-            input.value = input.value.replace(/(?<!^)\+/g, "");
-        });
-
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        form.appendChild(statusMessage);
-
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-
-        let formData = new FormData(form);
-        
-        let obj = {};
-        formData.forEach(function(value, key) {
-            obj[key] = value;
-        });
-        let json = JSON.stringify(obj);
-
-        request.send(json);
-
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = message.success;
-            } else {
-                statusMessage.innerHTML = message.failure;
-            }
-        });
-
-        for (let i = 0; i < input.length; i++) {
-            input[i].value = '';
-        }
+    input.addEventListener('input', () => {
+        input.value = input.value.replace(/[^0-9+]/g, "");
+        input.value = input.value.replace(/(?<!^)\+/g, "");
     });
 
-    // FormContacts
     let formContacts = document.getElementById('form'),
-        inputContacts = formContacts.getElementsByTagName('input');
+                inputContacts = formContacts.getElementsByTagName('input');
 
-        inputContacts[0].setAttribute('name', 'mail');
-        inputContacts[1].setAttribute('name', 'tel');
+            inputContacts[0].setAttribute('name', 'mail'); inputContacts[1].setAttribute('name', 'tel');
 
-        let inputTel = inputContacts[1];
+            let inputTel = inputContacts[1];
 
-        inputTel.addEventListener('input', () => {
+            inputTel.addEventListener('input', () => {
                 inputTel.value = inputTel.value.replace(/[^0-9+]/g, "");
                 inputTel.value = inputTel.value.replace(/(?<!^)\+/g, "");
             });
 
-    formContacts.addEventListener('submit', function(event) {
-        event.preventDefault();
-        formContacts.appendChild(statusMessage);
+    function sendForm(elem) {
+        elem.addEventListener('submit', function (event) {
+            event.preventDefault();
+            elem.appendChild(statusMessage);
 
-        statusMessage.style.cssText = 'color: #fff; margin-top: 10px;';
+            let request = new XMLHttpRequest();
+            request.open('POST', 'server.php');
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+            // request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-        let formData = new FormData(formContacts);
-        
-        let obj = {};
+            let formData = new FormData(elem);
+
+            let obj = {};
         formData.forEach(function(value, key) {
             obj[key] = value;
         });
@@ -222,19 +186,25 @@ window.addEventListener('DOMContentLoaded', function () {
 
         request.send(json);
 
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            } else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = message.success;
-            } else {
-                statusMessage.innerHTML = message.failure;
+            request.addEventListener('readystatechange', function () {
+                if (request.readyState < 4) {
+                    statusMessage.innerHTML = message.loading;
+                } else if (request.readyState === 4 && request.status == 200) {
+                    statusMessage.innerHTML = message.success;
+                } else {
+                    statusMessage.innerHTML = message.failure;
+                }
+            });
+
+            for (let i = 0; i < input.length; i++) {
+                input[i].value = '';
             }
+            for (let i = 0; i < inputContacts.length; i++) {
+                        inputContacts[i].value = '';
+                    }
         });
-
-        for (let i = 0; i < inputContacts.length; i++) {
-            inputContacts[i].value = '';
-        }
-    });
-
+    }
+    sendForm(form);
+    sendForm(formContacts);
+    
 });
