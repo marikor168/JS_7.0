@@ -1,6 +1,6 @@
-window.addEventListener('DOMContentLoaded', function () {
+// window.addEventListener('DOMContentLoaded', function () {
 
-    'use strict';
+    // 'use strict';
 
     function tabs(tabsTitle, tabsWrapper, tabsContent) {
 
@@ -89,11 +89,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
             if (t.total <= 0) {
                 clearInterval(timeInterval);
-                hours.textContent = '00';
-                minutes.textContent = '00';
-                seconds.textContent = '00';
+                // hours.textContent = '00';
+                // minutes.textContent = '00';
+                // seconds.textContent = '00';
             }
         }
+
+        updateClock();
+
+        return '';
     };
 
     setClock('timer', deadline);
@@ -228,4 +232,4 @@ window.addEventListener('DOMContentLoaded', function () {
     sendForm(form);
     sendForm(formContacts);
 
-});
+// });
