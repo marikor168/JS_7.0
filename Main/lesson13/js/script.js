@@ -308,8 +308,6 @@ window.addEventListener('DOMContentLoaded', function () {
             totalValue.innerHTML = 0;
         } else {
             totalValue.innerHTML = total * place.options[place.selectedIndex].value;
-            totalValue.innerHTML = total;
-
         }
     });
     
