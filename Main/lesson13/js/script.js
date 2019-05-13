@@ -302,15 +302,17 @@ window.addEventListener('DOMContentLoaded', function () {
         persons.value = persons.value.replace(/\D/g, "");
         personsSum = +this.value;
         
-        total = (daysSum + personsSum)*4000;
+        total = (daysSum + personsSum)* 4000;
 
-        if (persons.value == '' || restDays.value == '') {
+        if (persons.value == '' || restDays.value == '' || persons.value == 0 || restDays.value == 0) {
             totalValue.innerHTML = 0;
         } else {
+            totalValue.innerHTML = total * place.options[place.selectedIndex].value;
             totalValue.innerHTML = total;
+
         }
     });
-
+    
     restDays.addEventListener('input', function() {
         restDays.value = restDays.value.replace(/\D/g, "");
 
@@ -318,14 +320,15 @@ window.addEventListener('DOMContentLoaded', function () {
 
         total = (daysSum + personsSum)*4000;
 
-        if (persons.value == '' || restDays.value == '') {
+        if (persons.value == '' || restDays.value == '' || persons.value == 0 || restDays.value == 0) {           
             totalValue.innerHTML = 0;
         } else {
-            totalValue.innerHTML = total;
+            totalValue.innerHTML = total * place.options[place.selectedIndex].value;
         }
     });
 
     place.addEventListener('change', function() {
+        
        if (restDays.value == '' || persons.value == '') {
            totalValue.innerHTML = 0;
        } else {
