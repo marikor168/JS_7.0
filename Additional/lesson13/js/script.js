@@ -233,10 +233,7 @@ window.addEventListener('DOMContentLoaded', function () {
 
     // Slider
 
-    // тот слайд, который показывается в текущий момент
-let multiItemSlider = (function () {
-    return function (selector, config) {
-     
+    // тот слайд, который показывается в текущий момент   
 
     let slideIndex = 1,
         slides = document.querySelectorAll('.slider-item'),
@@ -266,7 +263,11 @@ let multiItemSlider = (function () {
             dots[slideIndex - 1].classList.add('dot-active');
         }
 
-        function plusSlides(n) {
+    slides.forEach(item => {
+        item.classList.remove('fade');    
+    });
+
+    function plusSlides(n) {
         showSlides(slideIndex += n);
     }
     // определяем текущий слайд и устанавливаем его
@@ -276,10 +277,28 @@ let multiItemSlider = (function () {
 
     prev.addEventListener('click', function () {
         plusSlides(-1);
+        slides[slideIndex - 1].animate([
+            // keyframes
+            { transform: 'translateX(-100px)' }, 
+            { transform: 'translateX(0px)' }
+          ], { 
+            // timing options
+            duration: 1000,
+            iterations: 1
+          });
     });
 
     next.addEventListener('click', function () {
         plusSlides(1);
+        slides[slideIndex - 1].animate([
+            // keyframes
+            { transform: 'translateX(100px)' }, 
+            { transform: 'translateX(0px)' }
+          ], { 
+            // timing options
+            duration: 1000,
+            iterations: 1
+          });
     });
 
     dotsWrap.addEventListener('click', function (event) {
@@ -289,133 +308,6 @@ let multiItemSlider = (function () {
             }
         }
     });
-
-    slides.forEach(item => {
-        item.classList.remove('fade');    
-    });
-
-    let sliderWrapper = document.querySelector('.wrap'),
-        // wrapperWidth = parseFloat(sliderWrapper.getBoundingClientRect().width),
-        // itemWidth = parseFloat(slides[0].getBoundingClientRect().width),
-        wrapperWidth = parseFloat(getComputedStyle(sliderWrapper).width),
-        itemWidth = parseFloat(getComputedStyle(slides[0]).width),
-
-        positionLeftItem = 0,
-        // positionLeftItem = slides[0].getBoundingClientRect().left,
-        transform = 0,
-        step = itemWidth / wrapperWidth * 100,
-        items = [];
-
-        console.log(wrapperWidth);
-        console.log(itemWidth);
-        console.log(sliderWrapper);
-        console.log(slides[0]);
-
-        // console.log(slides[0].getBoundingClientRect().width);
-
-//         slides.forEach(function (item, index) {
-//             items.push({item: item, 
-//                         position: index, 
-//                         transform: 0});
-//         });
-//         console.log(items);
-
-//         let position = {
-//             getMin: 0,
-//             getMax: items.length - 1,
-//         };
-
-//         let transformItem = function (direction) {
-//             if (direction === 'right') {
-//                 if ((positionLeftItem + wrapperWidth / itemWidth - 1) >= position.getMax) {
-//                     return;
-//                 }
-//                 positionLeftItem++;
-//                 transform -= step;
-//             }
-//             if (direction === 'left') {
-//                 if (positionLeftItem <= position.getMin) {
-//                     return;
-//                 }
-//                 positionLeftItem--;
-//                 transform += step;
-//             }
-//             sliderWrapper.style.transform = 'translateX(' + transform + '%)';
-//         };
-
-//         console.log(transform);
-
-//         let controlClick = function(e){
-//             let direction = this.classList.contains('next') ? 'right' : 'left';
-//             e.preventDefault();
-//             transformItem(direction);
-//         };
-
-//         next.addEventListener('click', controlClick);
-//         prev.addEventListener('click', controlClick);
-
-// return {
-//     right: function() {
-//         transformItem('right');
-//     },
-//     left: function() {
-//         transformItem('left');
-//     }
-// };
-    };
-
-}());
-
-let sliderM = multiItemSlider('.slider');
-    
-
-
-
-
-    // showSlides(slideIndex);
-
-    // function showSlides(n) {
-
-    //     if (n > slides.length) {
-    //         slideIndex = 1;
-    //     }
-    //     if (n < 1) {
-    //         slideIndex = slides.length;
-    //     }
-
-    //     slides.forEach((item) => item.style.display = 'none');
-    //     // for (let i = 0; i < slides.length; i++) {
-    //     //     slides[i].style.display = 'none';
-    //     // }
-    //     dots.forEach((item) => item.classList.remove('dot-active'));
-
-    //     slides[slideIndex - 1].style.display = 'block';
-    //     dots[slideIndex - 1].classList.add('dot-active');
-    // }
-
-    // function plusSlides(n) {
-    //     showSlides(slideIndex += n);
-    // }
-    // // определяем текущий слайд и устанавливаем его
-    // function currentSlide(n) {
-    //     showSlides(slideIndex = n);
-    // }
-
-    // prev.addEventListener('click', function () {
-    //     plusSlides(-1);
-    // });
-
-    // next.addEventListener('click', function () {
-    //     plusSlides(1);
-    // });
-
-    // dotsWrap.addEventListener('click', function (event) {
-    //     for (let i = 0; i < dots.length + 1; i++) {
-    //         if (event.target.classList.contains('dot') && event.target == dots[i - 1]) {
-    //             currentSlide(i);
-    //         }
-    //     }
-    // });
 
     //Calc
 
