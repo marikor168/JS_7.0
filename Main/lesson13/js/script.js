@@ -298,6 +298,9 @@ window.addEventListener('DOMContentLoaded', function () {
 
     totalValue.innerHTML = 0;
 
+    persons.setAttribute('type', 'text');
+    restDays.setAttribute('type', 'text');
+
     persons.addEventListener('input', function() {
         persons.value = persons.value.replace(/\D/g, "");
         personsSum = +this.value;
